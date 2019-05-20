@@ -24,7 +24,7 @@ You can build **vm2core** using the public Windows SDK however the supporting DL
 # Create the Visual Studio Project and Build ...
 #### Get the sources from github.
 ```bash
-git clone https://github.com/seansp/azure-linux-utils.git
+git clone https://github.com/azure/azure-linux-utils.git
 ```
 #### The sources for vm2core can be found in the src folder within vm2core.
 ```dos
