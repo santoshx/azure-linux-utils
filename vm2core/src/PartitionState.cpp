@@ -109,10 +109,11 @@ bool VmPartitionState::ReadPartitionBlob(VM_SAVED_STATE_DUMP_HANDLE dump_handle)
 		m_prstatus[i].pr_reg[14] = GetRegisterValue64(dump_handle, i, X64_RegisterRdi);
 		// orig_ax not stored in state files.
 		//m_prstatus[i].pr_reg[15] = GetRegisterValue64(dump_handle, i, X64_RegisterOrigAx);
+		m_prstatus[i].pr_reg[15] = 0;
 		m_prstatus[i].pr_reg[16] = GetRegisterValue64(dump_handle, i, X64_RegisterRip);
-		m_prstatus[i].pr_reg[17] = GetRegisterValue64(dump_handle, i, X64_RegisterRFlags);
-		m_prstatus[i].pr_reg[18] = GetRegisterValue64(dump_handle, i, X64_RegisterRsp);
-		m_prstatus[i].pr_reg[19] = GetRegisterValue64(dump_handle, i, X64_RegisterSegCs);
+		m_prstatus[i].pr_reg[17] = GetRegisterValue64(dump_handle, i, X64_RegisterSegCs);
+		m_prstatus[i].pr_reg[18] = GetRegisterValue64(dump_handle, i, X64_RegisterRFlags);
+		m_prstatus[i].pr_reg[19] = GetRegisterValue64(dump_handle, i, X64_RegisterRsp);
 		m_prstatus[i].pr_reg[20] = GetRegisterValue64(dump_handle, i, X64_RegisterSegSs);
 		m_prstatus[i].pr_reg[21] = GetRegisterValue64(dump_handle, i, X64_RegisterBaseFs);
 		m_prstatus[i].pr_reg[22] = GetRegisterValue64(dump_handle, i, X64_RegisterBaseGs);

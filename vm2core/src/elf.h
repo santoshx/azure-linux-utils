@@ -82,7 +82,6 @@ typedef struct timevalelf {
  * not support and which gdb doesn't really use excluded.
  * Fields present but not used are marked with "XXX".
  */
-#pragma pack(push,1)
 struct elf_prstatus {
 #if 0
 	int64_t	pr_flags;	/* XXX Process flags */
@@ -111,7 +110,6 @@ struct elf_prstatus {
 	elf_gregset_t pr_reg;	/* GP registers */
 	int pr_fpvalid;		/* True if math co-processor being used.  */    // 4 bytes
 };
-#pragma pack(pop)
 
 /* These constants define the different elf file types */
 #define ET_NONE   0
