@@ -23,9 +23,6 @@
 VmPartitionState::VmPartitionState() {
 	m_prstatus = NULL;
 
-	strcpy_s(m_vmcoreinfo, "VMCOREINFO");
-	m_vmcoreinfo_len = (uint32_t)strlen(m_vmcoreinfo);
-
 	m_dump_handle = NULL;
 }
 
@@ -233,6 +230,13 @@ HRESULT VmPartitionState::WriteDump(wchar_t *out_file) {
             NOTE_CORE_NAME, &m_prstatus[i],
             sizeof(struct elf_prstatus), NT_PRSTATUS);
     }
+
+    // Fill fake data in VMCOREINFO to keep crash tool happy
+    // TODO: Is it possible to get real data from state file ?
+    strcpy_s(m_vmcoreinfo, "FAKE1=IGNORE1\n");
+    strcat_s(m_vmcoreinfo, "FAKE2=IGNORE2\n");
+    strcat_s(m_vmcoreinfo, "FAKE3=IGNORE3\n");
+    m_vmcoreinfo_len = (uint32_t)strlen(m_vmcoreinfo);
 
     note_name_sz = NOTE_VMCOREINFO_NAME_PAD_LEN;
     note_data_sz = roundup(m_vmcoreinfo_len, 4);
