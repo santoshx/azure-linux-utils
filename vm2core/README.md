@@ -4,6 +4,9 @@ OVERVIEW
 and converts them into an ELF-format core dump that is readable by Linux
 kernel analysis tools such as "crash".
 
+Currently it does not work for guests with KASLR enabled ( >= RHEL 75). You
+may try kernel option nokaslr.
+
 The output format of the generated core dump is based on the same format that
 is used by the Linux kernel's /proc/vmcore component.
 
