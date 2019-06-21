@@ -127,35 +127,21 @@ Replace uname -r with your specific version if using a different kernel.
 yum --enablerepo=base-debuginfo install kernel-debuginfo-$(uname -r) -y
 ```
 
-Get Crash version 7.1.5 and build it.  Adding tools needed for ability to build before make.
+Install crash
 ```bash
-yum install -y wget
-wget https://github.com/crash-utility/crash/archive/7.1.5.tar.gz
-tar -xvzf 7.1.5.tar.gz
-​yum groupinstall "Development Tools" -y
-yum install ncurses-devel -y
-yum install -y zlib-devel
-cd crash-7.1.5/
-make
+yum install -y crash
 ```
 
 Start crash and examine the core (assuming it is ../centos7.2.1511.core)
 ```bash
-./crash /usr/lib/debug/usr/lib/modules/3.10.0-327.el7.x86_64/vmlinux /boot/System.map-3.10.0-327.el7.x86_64 ../centos7.2.1511.core
+crash /usr/lib/debug/usr/lib/modules/3.10.0-327.el7.x86_64/vmlinux /boot/System.map-3.10.0-327.el7.x86_64 ../centos7.2.1511.core
 ```
 ​
 ​​Ubuntu 16.04.03 
 (on ubuntu, i used my local user)
-First get the build tools to make crash​​​​.
+First install crash tool​​​​.
 ```bash
-sudo apt-get install -y git build-essential libncurses5-dev zlib1g-dev bison make
-wget, make, and​​ install crash.
-wget https://github.com/crash-utility/crash/archive/7.1.5.tar.gz
-tar -xvzf 7.1.5.tar.gz
-cd crash-7.1.5/
-make
-sudo make install
-cd ..
+sudo apt-get install -y crash
 ```
 Now retrieve the symbols for your kernel.
 ```bash
