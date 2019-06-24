@@ -23,9 +23,6 @@
 VmPartitionState::VmPartitionState() {
 	m_prstatus = NULL;
 
-	strcpy_s(m_vmcoreinfo, "VMCOREINFO");
-	m_vmcoreinfo_len = (uint32_t)strlen(m_vmcoreinfo);
-
 	m_dump_handle = NULL;
 }
 
@@ -109,10 +106,11 @@ bool VmPartitionState::ReadPartitionBlob(VM_SAVED_STATE_DUMP_HANDLE dump_handle)
 		m_prstatus[i].pr_reg[14] = GetRegisterValue64(dump_handle, i, X64_RegisterRdi);
 		// orig_ax not stored in state files.
 		//m_prstatus[i].pr_reg[15] = GetRegisterValue64(dump_handle, i, X64_RegisterOrigAx);
+		m_prstatus[i].pr_reg[15] = 0;
 		m_prstatus[i].pr_reg[16] = GetRegisterValue64(dump_handle, i, X64_RegisterRip);
-		m_prstatus[i].pr_reg[17] = GetRegisterValue64(dump_handle, i, X64_RegisterRFlags);
-		m_prstatus[i].pr_reg[18] = GetRegisterValue64(dump_handle, i, X64_RegisterRsp);
-		m_prstatus[i].pr_reg[19] = GetRegisterValue64(dump_handle, i, X64_RegisterSegCs);
+		m_prstatus[i].pr_reg[17] = GetRegisterValue64(dump_handle, i, X64_RegisterSegCs);
+		m_prstatus[i].pr_reg[18] = GetRegisterValue64(dump_handle, i, X64_RegisterRFlags);
+		m_prstatus[i].pr_reg[19] = GetRegisterValue64(dump_handle, i, X64_RegisterRsp);
 		m_prstatus[i].pr_reg[20] = GetRegisterValue64(dump_handle, i, X64_RegisterSegSs);
 		m_prstatus[i].pr_reg[21] = GetRegisterValue64(dump_handle, i, X64_RegisterBaseFs);
 		m_prstatus[i].pr_reg[22] = GetRegisterValue64(dump_handle, i, X64_RegisterBaseGs);
@@ -232,6 +230,13 @@ HRESULT VmPartitionState::WriteDump(wchar_t *out_file) {
             NOTE_CORE_NAME, &m_prstatus[i],
             sizeof(struct elf_prstatus), NT_PRSTATUS);
     }
+
+    // Fill fake data in VMCOREINFO to keep crash tool happy
+    // TODO: Is it possible to get real data from state file ?
+    strcpy_s(m_vmcoreinfo, "FAKE1=IGNORE1\n");
+    strcat_s(m_vmcoreinfo, "FAKE2=IGNORE2\n");
+    strcat_s(m_vmcoreinfo, "FAKE3=IGNORE3\n");
+    m_vmcoreinfo_len = (uint32_t)strlen(m_vmcoreinfo);
 
     note_name_sz = NOTE_VMCOREINFO_NAME_PAD_LEN;
     note_data_sz = roundup(m_vmcoreinfo_len, 4);
