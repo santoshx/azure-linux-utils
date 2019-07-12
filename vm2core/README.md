@@ -4,9 +4,6 @@ OVERVIEW
 and converts them into an ELF-format core dump that is readable by Linux
 kernel analysis tools such as "crash".
 
-Currently it does not work for guests with KASLR enabled ( >= RHEL 75). You
-may try kernel option nokaslr.
-
 The output format of the generated core dump is based on the same format that
 is used by the Linux kernel's /proc/vmcore component.
 
@@ -105,6 +102,22 @@ For example, you can run this "crash" command:
 
 	crash <System Map file> <Kernel image with debug info> <vmcore file>
 
+5) For guests with KASLR enabled kernels (>= RHEL 75). You need to find the
+kernel offset and phys base and supply these values to "crash" command.
+
+You may use below two commands to find the values from the generated dump file:
+
+```bash
+strings <vmcore file> | grep -v strings | grep KERNELOFFSET= | grep %lx -A 1 | grep -v %lx
+strings <vmcore file> | grep -v strings | grep 'NUMBER(phys_base)='
+````
+
+Then supply these values to "crash" command:
+
+	crash <System Map file> <Kernel image with debug info> <vmcore file> --kaslr <KERNELOFFSET> -m phys_base=<phys_base>
+
+Alternatively you may also try kernel option nokaslr.
+
 
 CRASH CONFIGURATION
 =================
@@ -161,6 +174,20 @@ And finally run crash... (assuming xerus.core is your core)
 
 ```bash
 su​do crash /usr/lib/debug/boot/vmlinux-4.4.0-87-generic /boot/System.map-4.4.0-87-generic xerus.core
+```
+
+The above distro provided "crash" command has a bug and it won't accept phys_base
+argument correctly. Hence for kaslr dumps you'll need to download and build the
+master branch of "crash" from https://github.com/crash-utility/crash
+
+Build steps on centos/redhat may look like:
+```bash
+yum install wget ncurses-devel zlib-devel -y
+yum groupinstall "Development Tools" -y
+wget https://github.com/crash-utility/crash/archive/master.zip
+tar -xvzf crash-master.zip
+cd crash-master/
+make
 ```
 
 USEFUL AUTOMATION EXAMPLES ... 
