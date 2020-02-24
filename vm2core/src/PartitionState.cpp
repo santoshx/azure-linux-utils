@@ -259,6 +259,7 @@ HRESULT VmPartitionState::WriteDump(wchar_t *out_file) {
     hdr.e_phnum = (uint16_t)(m_memory_blocks.size() + 1);
 
     phdrs = (struct elf64_phdr *)malloc(hdr.e_phnum * sizeof(struct elf64_phdr));
+    memset(phdrs, 0, hdr.e_phnum * sizeof(struct elf64_phdr));
 
     struct elf64_phdr *phdr = phdrs;
     uint64_t file_offset = sizeof(hdr) + hdr.e_phnum * sizeof(struct elf64_phdr);
