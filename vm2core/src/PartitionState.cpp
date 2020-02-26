@@ -83,12 +83,12 @@ bool VmPartitionState::ReadPartitionBlob(VM_SAVED_STATE_DUMP_HANDLE dump_handle)
     // action = GetArchitecture(dump_handle, vpx, &vpa);
     // if (vpa == Arch_x64)
     GetVpCount(dump_handle, &m_num_vps);
-	wprintf(L"vm2core: %d processor%s detected.", m_num_vps, m_num_vps == 1 ? L"" : L"s");
+	wprintf(L"vm2core: %d processor%s detected.\n", m_num_vps, m_num_vps == 1 ? L"" : L"s");
 
 	m_prstatus = new struct elf_prstatus[m_num_vps];
 
 	for (uint32_t i = 0; i < m_num_vps; i++) {
-		wprintf(L"CPU ID: %u", i );
+		//wprintf(L"CPU ID: %u", i );
 		m_prstatus[i].pr_reg[0] = GetRegisterValue64(dump_handle, i, X64_RegisterR15);
 		m_prstatus[i].pr_reg[1] = GetRegisterValue64(dump_handle, i, X64_RegisterR14);
 		m_prstatus[i].pr_reg[2] = GetRegisterValue64(dump_handle, i, X64_RegisterR13);
