@@ -277,7 +277,7 @@ HRESULT VmPartitionState::WriteDump(wchar_t *out_file) {
         phdr->p_filesz = phdr->p_memsz = mem_block->page_count << PAGE_SHIFT;
         phdr->p_offset = file_offset;
         phdr->p_paddr = mem_block->gpa_start_index << PAGE_SHIFT;
-        phdr->p_vaddr = phdr->p_paddr + PAGE_OFFSET;
+        phdr->p_vaddr = phdr->p_paddr;
         file_offset += phdr->p_filesz;
         phdr++;
     }

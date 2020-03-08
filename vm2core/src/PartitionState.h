@@ -28,7 +28,6 @@
 #include "elf.h"
 #include <VmSavedStateDump.h>
 
-#define PAGE_OFFSET 0xffff880000000000
 #define PAGE_SHIFT 12
 #define PAGE_SIZE (1 << PAGE_SHIFT)
 #define PAGE_PER_BLOCK 256
